@@ -1,0 +1,16 @@
+#history {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.anime_item {
+    margin: 10px;
+    width: 250px;
+}
+
+.anime_item img {
+    width: 80%;
+    height: auto;
+    overflow: hidden;
+}
