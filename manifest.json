@@ -1,0 +1,21 @@
+{
+    "name": "PWA from scratch",
+    "short_name": "PWA from 0",
+    "lang": "fr",
+    "start_url": "/",
+    "display": "standalone",
+    "theme_color": "#c2f442",
+    "icons": [{
+            "src": "pwa0-64.png",
+            "sizes": "64x64"
+        },
+        {
+            "src": "pwa0-128.png",
+            "sizes": "128x128"
+        },
+        {
+            "src": "pwa0-512.png",
+            "sizes": "512x512"
+        }
+    ]
+}
