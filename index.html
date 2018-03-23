@@ -12,7 +12,7 @@
     <link rel="icon" sizes="128x128" href="pwa0-128.png">
 </head>
 
-<body>
+<body onload="installServiceWorkerAsync()">
     <div>
         <input id="anime_id_input" placeholder="Anime id" />
         <button id="ok_button" onclick="onOkButtonClickAsync()">OK</button>

@@ -12,5 +12,6 @@
 .anime_item img {
     width: 80%;
     height: auto;
+    /* allows to adapt to browser width */
     overflow: hidden;
 }
