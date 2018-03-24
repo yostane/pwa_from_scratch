@@ -26,15 +26,19 @@ function updateHistory(anime) {
 async function onOkButtonClickAsync() {
     let targetElementId = '#main_anime'
     let animeId = document.querySelector("#anime_id_input").value
-    let response = await fetch(API_ANIME + animeId)
-    if (!response.ok) {
-        return
-    }
-    let anime = await response.json()
-    console.log("anime", anime)
-    document.querySelector(targetElementId).innerHTML = buildAnimeMarkup(anime)
+    try {
+        const response = await fetch(API_ANIME + animeId)
+        if (!response.ok) {
+            return
+        }
+        let anime = await response.json()
+        console.log("anime", anime)
+        document.querySelector(targetElementId).innerHTML = buildAnimeMarkup(anime)
 
-    updateHistory(anime)
+        updateHistory(anime)
+    } catch (err) {
+        console.error(`error ${err}`)
+    }
 }
 
 /**

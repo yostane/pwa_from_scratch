@@ -21,23 +21,40 @@ this.addEventListener('install', async function() {
  * , we can even make our own response from scratch !
  * In this one, we are going to use cache first strategy
  */
-self.addEventListener('fetch', async function(event) {
-    console.log(`URL ${event.request.url}`, `location origin ${location}`)
+self.addEventListener('fetch', event => {
+    //We defind the promise (the async code block) that return either the cached response or the network one
+    //It should return a response object
+    const responsePromiseBlock = async function() {
+        console.log(`URL ${event.request.url}`, `location origin ${location}`)
 
-    try {
-        const cachedResponse = await caches.match(event.request)
-        if (cachedResponse) {
-            console.log(`Cached response ${cachedResponse}`)
-            return cachedResponse
+        try {
+            //Try to get the cached response
+            const cachedResponse = await caches.match(event.request)
+            if (cachedResponse) {
+                //Return the cached response if present
+                console.log(`Cached response ${cachedResponse}`)
+                return cachedResponse
+            }
+
+            //Get the network response if no cached response is present
+            const netResponse = await fetch(event.request)
+            console.log(`adding net response to cache`)
+
+            //Here, we add the network response to the cache
+            let cache = await caches.open(cacheName)
+
+            //We must provide a clone of the response here
+            cache.put(event.request, netResponse.clone())
+
+            //return the network response
+            return netResponse
+        } catch (err) {
+            console.error(`Error ${err}`)
+            throw err
         }
+    };
 
-        const netResponse = await fetch(event.request)
-        console.log(`adding net response to cache`)
-        let cache = await caches.open(cacheName)
-        cache.put(event.request, netResponse.clone())
-        return netResponse
-    } catch (err) {
-        console.error(`Error ${err}`)
-    }
-
+    //In order to override the default fetch behavior, we must provide the result of our custom behavoir to the
+    //event.respondWith method
+    event.respondWith(responsePromiseBlock())
 })
