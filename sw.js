@@ -1,4 +1,4 @@
-const cacheName = "V1"
+const CACHE_NAME = "V1"
 
 /**
  * The install event is fired when the registration succeeds. 
@@ -6,7 +6,7 @@ const cacheName = "V1"
  * Generally, we cache static resources that allow the website to run offline
  */
 this.addEventListener('install', async function() {
-    const cache = await caches.open(cacheName);
+    const cache = await caches.open(CACHE_NAME);
     cache.addAll([
         '/index.html',
         '/main.css',
@@ -41,7 +41,7 @@ self.addEventListener('fetch', event => {
             console.log(`adding net response to cache`)
 
             //Here, we add the network response to the cache
-            let cache = await caches.open(cacheName)
+            let cache = await caches.open(CACHE_NAME)
 
             //We must provide a clone of the response here
             cache.put(event.request, netResponse.clone())
