@@ -7,9 +7,9 @@ const API_ANIME = API_BASE + "anime/"
  * generate anime tag
  */
 function buildAnimeMarkup(anime) {
-    return `<div class="anime_item"><img class='anime_image' src=${anime.image_url} />` +
-        `<h2 class='anime_name'>${anime.title}</h2>` +
-        `<p class='anime_description'>${anime.premiered}</p></div>`
+    return `<div class="anime_item"><img class='anime_image' src=${anime.image_url} />
+        <h2 class='anime_name'>${anime.title}</h2>
+        <p class='anime_description'>${anime.premiered}</p></div>`
 }
 
 /**
