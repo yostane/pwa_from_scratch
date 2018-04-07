@@ -29,6 +29,8 @@ Once everything is setup and ready, we can initialize the first lines of code.
 
 The PWA that we are going to build is a simple anime search app. It allows to display an anime given its **id**. Thus, it will show and input field and buttons for entering an anime id and validating it. In addition, we will display the search history of the user. The first step consists in adding a manifest that allows to add the PWA to home-screen. Next, a service worker will be added to cache the previous search actions and thus will not fail even in offline mode. To demonstrate the use of caching without service workers, the search history will be cached for offline use.
 
+![app shell](./readme_assets/app_shell.png "The anime search web app")
+
 We are going to create the first files and first lines of code of our project. This allows to have some code running and also test our setup before digging into PWA concepts.
 
 Please follow the below steps to get a minimal html website:
@@ -80,7 +82,7 @@ Let me explain these points:
 - Minimal: the app shell is the content that is first loaded when we open a PWA. having a small and optimized app shell means faster load time and smaller caching.
 - Constant: since we are going to use the PWA offline, we need to cache some html, css, js and media files to load the app. Having a base content that changes over time makes managing offline mode very complicated. Thus, I consider a good app shell to be constant.
 
-In light of that explanation, the app shell will have a single HTML page with no anime content at all. The anime content will be loaded from the internet or from the cache. The shell will also contain the javascript code that allows to look for anumes and maintin a search history. FInally we will add a css file and the static assets to the app Shell. 
+In light of that explanation, the app shell will have a single HTML page with no anime content at all. The anime content will be loaded from the internet or from the cache. The shell will also contain the javascript code that allows to look for anime and maintain a search history. Finally we will add a css file and the static assets to the app Shell.
 
 This app shell will be very small, constant or static and allow us to use all the functions the PWA whether offline or online.
 
@@ -207,17 +209,30 @@ You can test the app right now. It is not yet PWA compliant but we will work on 
 
 ## The PWA manifest
 
-Our first step in the PWA world is adding a manifest file
+Our first step in the PWA world is adding a manifest file. Here is its definition from [MDN](https://developer.mozilla.org/en-US/docs/Web/Manifest):
 
-https://tomitm.github.io/appmanifest/
+> The web app manifest provides information about an application (such as name, author, icon, and description) in a JSON text file.
 
-Register a service worker:
+Adding a web manifest gives you other advantages. Here are some of them:
+
+- They allow the user to add a bookmark on your home-screen or desktop
+- It allows to display a simple splash-screen while the app is loaded
+
+Since the web manisfest is a plain JSON file, we can either write it manually or use a tool to generate it. We are going to use this [Web App Manifest Generator](https://tomitm.github.io/appmanifest/).
+
+![Web App Manifest Generator](./readme_assets/pwa_manifest_generator.png "Web App Manifest Generator")
+
+## Adding a Service Worker
+
+
 In this step we are going to regsiter a service worker whose implemetation is defined in a javascript file that we will call “sw.js”
 Define the following function which registers the service worker
 Call the function when the document loads
 
-## Links:
+## Links
 
 - [Adding a Service Worker and Offline into your Web App](https://developers.google.com/web/fundamentals/codelabs/offline/)
 - [The App Shell Model](https://developers.google.com/web/fundamentals/architecture/app-shell)
 - [Progressive Web App tutorial – learn to build a PWA from scratch](https://www.youtube.com/watch?v=gcx-3qi7t7c)
+- [Manifeste des applications web](https://developer.mozilla.org/fr/docs/Web/Manifest)
+- [The Web App Manifest](https://developers.google.com/web/fundamentals/web-app-manifest/)

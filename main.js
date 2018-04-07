@@ -31,7 +31,7 @@ async function onOkButtonClickAsync() {
         if (!response.ok) {
             return
         }
-        let anime = await response.json()
+        const anime = await response.json()
         console.log("anime", anime)
         document.querySelector(targetElementId).innerHTML = buildAnimeMarkup(anime)
 
