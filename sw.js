@@ -15,16 +15,16 @@ this.addEventListener('install', async function() {
 })
 
 /**
- * The fetch event is firered every time the client sends a request. 
+ * The fetch event is fired every time the browser sends a request. 
  * In this case, the service worker acts as a proxy. We can for example return the cached
- * version of the ressource matching the request, or send the request go through the internet
+ * version of the ressource matching the request, or send the request to the internet
  * , we can even make our own response from scratch !
- * In this one, we are going to use cache first strategy
+ * Here, we are going to use cache first strategy
  */
 self.addEventListener('fetch', event => {
     //We defind the promise (the async code block) that return either the cached response or the network one
     //It should return a response object
-    const responsePromiseBlock = async function() {
+    const getCustomResponsePromise = async => {
         console.log(`URL ${event.request.url}`, `location origin ${location}`)
 
         try {
@@ -52,9 +52,9 @@ self.addEventListener('fetch', event => {
             console.error(`Error ${err}`)
             throw err
         }
-    };
+    }
 
     //In order to override the default fetch behavior, we must provide the result of our custom behavoir to the
     //event.respondWith method
-    event.respondWith(responsePromiseBlock())
+    event.respondWith(getCustomResponsePromise())
 })

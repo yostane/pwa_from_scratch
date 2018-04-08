@@ -7,6 +7,7 @@
     - [The PWA manifest](#the-pwa-manifest)
     - [Adding a Service Worker](#adding-a-service-worker)
     - [Caching the history](#caching-the-history)
+    - [Conclusion and going further](#conclusion-and-going-further)
     - [Links](#links)
 
 # Build a PWA from scratch
@@ -356,15 +357,78 @@ You can check that the files successfully added by clicking on the **Cache Stora
 
 ![Cache storage](./readme_assets/cache_storage.png "Cache storage")
 
-There is a last thing to cache which is the history. Since it is an array that we build and not a direct fetch response, we cannot use the Cache API. The next part of this guide will show another API for caching outside of service workers.
+Great, the files that I added earlier are all inside the cache storage. However, we just did half of the caching. In order to confirm that, click on the **offline** checkbox in the service worker menu. Refresh the page and ... :scream: the web app fails to load. To sum up, we added file to the cache but they were not loaded in offline mode. The problem is that we did not inform the browser to use them when the network call fails.
+
+The remaining piece of the puzzle id the `fetch` event of the service worker. This event is called before any network request is emitted by the browser. When we handle this event, we can choose to load cached content, forge our response object or just get the network response. And as a bonus the `fetch` event handler that we are going to implement will also cache the API calls.
+
+Please add to following to the service worker.
+
+```javascript
+/**
+ * The fetch event is fired every time the browser sends a request. 
+ * In this case, the service worker acts as a proxy. We can for example return the cached
+ * version of the ressource matching the request, or send the request to the internet
+ * , we can even make our own response from scratch !
+ * Here, we are going to use cache first strategy
+ */
+self.addEventListener('fetch', event => {
+    //We defind the promise (the async code block) that return either the cached response or the network one
+    //It should return a response object
+    const getCustomResponsePromise = async => {
+        console.log(`URL ${event.request.url}`, `location origin ${location}`)
+
+        try {
+            //Try to get the cached response
+            const cachedResponse = await caches.match(event.request)
+            if (cachedResponse) {
+                //Return the cached response if present
+                console.log(`Cached response ${cachedResponse}`)
+                return cachedResponse
+            }
+
+            //Get the network response if no cached response is present
+            const netResponse = await fetch(event.request)
+            console.log(`adding net response to cache`)
+
+            //Here, we add the network response to the cache
+            let cache = await caches.open(CACHE_NAME)
+
+            //We must provide a clone of the response here
+            cache.put(event.request, netResponse.clone())
+
+            //return the network response
+            return netResponse
+        } catch (err) {
+            console.error(`Error ${err}`)
+            throw err
+        }
+    }
+
+    //In order to override the default fetch behavior, we must provide the result of our custom behavoir to the
+    //event.respondWith method
+    event.respondWith(getCustomResponsePromise())
+})
+```
+
+Please note that the main line of code is this one `event.respondWith(getCustomResponsePromise())`. It allows us to **override** the browser response with a `Promise` or `async` function that resolves to a `Response` instance.
+
+Basically, this event handler loads content from the Cache Storage. If the content is not available, we get it from the internet. This behavior is called a **Cache first strategy**. Other strategies are available and you even make your own **fetch cats :smiley_cat:** strategy.
+
+Reload the page, do some anime searches and verify the cache storage. New elements should pop there.
+
+![New Cached items](./readme_assets/new_cache_storage.png "New Cached items")
+
+Next, check the **offline** checkbox and try opening the page again. Magnificent ! The page is loaded and we can even search for previously searched anime. It event works on my phone using plane mode. It's magic :heart_eyes:.
+
+After harnessing all that power, there is still a last thing to do which is caching the history. Since it is an array that we build and not a direct network response, we cannot use the Cache API and the service worker. The next part of this guide will show a way for caching outside of service workers.
 
 ## Caching the history
 
-Before tackling the Service Worker. I'd like to start with using the cache API in order to cache the search history. This allows to practice this API in a classical manner before using it in the Service Worker.
 
 
+## Conclusion and going further
 
-Now that we got our hand on this great Cache API, we can start playing with the service worker.
+TODO
 
 ## Links
 
