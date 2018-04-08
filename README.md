@@ -11,7 +11,9 @@
     - [Conclusion and going further](#conclusion-and-going-further)
     - [Links](#links)
 
-Welcome to my guide for creating a PWA (progressive web app) from scratch. I hope that it will help you understand a little more service workers, manifest and caching. Enjoy :mortar_board:.
+Welcome to my guide for creating a PWA (progressive web app) from scratch. I hope that it will help you understand a little more service workers, Web App manifest and caching. Enjoy :mortar_board:.
+
+![PWA icon](./readme_assets/pwa_diekus.png "PWA icon")
 
 ## Introduction
 
@@ -166,7 +168,7 @@ The javascript part of our app shell will be evolving throughout the tutorial. B
 
 First of all, define the constants and the functions that will generate the html tags from a single anime object.
 
-```javascript
+```js
 //create an empty array on startup
 let animeHistory = []
 const API_BASE = "https://api.jikan.me/"
@@ -317,7 +319,7 @@ The service worker is basically a set of event handlers for some browser events 
 
 Add the following function to the **main.js** file and add it to the `onload` event handler of your **index.html** page.
 
-```javascript
+```js
 /**
  * Install the service worker
  */
@@ -349,7 +351,7 @@ Next, create a javascript file at the root folder called **sw.js** (or whatever 
 
 The first event is `install`. It is called once after a successful service worker **registration**. It is the best place to cache the app shell and all static content. We are going to use Cache API of the service worker to add those files as follows. Add the following code to sw.js.
 
-```javascript
+```js
 const CACHE_NAME = "V1"
 
 /**
@@ -448,7 +450,7 @@ The caveat here is that this persistent storage works only with string values. S
 
 In **main.js**, modify the `updateHistory` function as follows.
 
-```javascript
+```js
 const HISTORY_STORAGE_KEY = 'HISTORY_KEY'
 /**
  * add an anime to the history and updates display
@@ -508,6 +510,8 @@ This guide was a practical introduction to the most PWA concepts. They are: the 
 - Add server side rendering.
 
 If you want to build a production PWA, I suggest you to use frameworks that support PWA or plugins for PWA if you use a CMS. Generally you don't need to implement a service worker but it is interesting to know how it works.
+
+The GitHub repository is available [here](https://github.com/yostane/pwa_from_scratch)
 
 Happy coding :)
 
