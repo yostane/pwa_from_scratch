@@ -6,6 +6,7 @@
     - [The app shell](#the-app-shell)
     - [The PWA manifest](#the-pwa-manifest)
     - [Adding a Service Worker](#adding-a-service-worker)
+    - [Caching the history](#caching-the-history)
     - [Links](#links)
 
 # Build a PWA from scratch
@@ -116,7 +117,7 @@ The html file should look like this now and it should not change.
     <script src="main.js"></script>
 </head>
 
-<body onload="installServiceWorkerAsync()">
+<body>
     <div>
         <input id="anime_id_input" placeholder="Anime id" />
         <button id="ok_button" onclick="onOkButtonClickAsync()">OK</button>
@@ -289,13 +290,81 @@ Right after that, the fullscreen PWA is shown with all its glory thanks to the `
 
 ![PWA run from bookmark](./readme_assets/pwa_chrome_fullscreen.jpg "PWA run from bookmark")
 
-Yaaaay the PWA is now added to my home-screen :heart_eyes:. However, there is no caching right now :unamused:. Let's deal with that next :rocket:.
+Yaaaay ! The PWA is now added to my home-screen :heart_eyes:. However, there is no caching right now :unamused:. Let's deal with that next :rocket:.
 
 ## Adding a Service Worker
 
-In this step we are going to register a service worker whose implementation is defined in a javascript file that we will call “sw.js”
-Define the following function which registers the service worker
-Call the function when the document loads
+In this section, we are going to implement an offline cache for the static files and the responses of the fetch requests that load anime info from Jikan.
+
+In order to cache responses to requests made by the browser, we need to implement a proxy that intercepts those requests. In other words we will customize the behavior `fetch` calls by caching the response and presenting the cached content. The **proxy** that allows us to do that is called a **Service Worker**. The API that allows us to cache request and response objects is the [**Cache API**](https://developer.mozilla.org/fr/docs/Web/API/Cache).
+
+The service worker is basically a set of event handlers for some browser events that must be implemented in a separate file, often called **sw.js**. In order to use it, we need to register it to the browser. In order to do that, add the following function to the **main.js** file and add it to the `onload` event handler of your **index.html** page.
+
+```javascript
+/**
+ * Install the service worker
+ */
+async function installServiceWorkerAsync() {
+    if ('serviceWorker' in navigator) {
+        try {
+            let serviceWorker = await navigator.serviceWorker.register('/sw.js')
+            console.log(`Service worker registered ${serviceWorker}`)
+        } catch (err) {
+            console.error(`Failed to register service worker: ${err}`)
+        }
+    }
+}
+```
+
+When the page reloads, you should see the following log line in the console of your browser.
+
+> Service worker registered [object ServiceWorkerRegistration]
+
+Which means that the file **sw.js** in `let serviceWorker = await navigator.serviceWorker.register('/sw.js')` has been successfully registered as a service worker. You can confirm that by checking the **Applications** tab of the Chrome developer tools.
+
+![Chrome apps tab](./readme_assets/chrome_apps_tab.png "Chrome apps tab")
+
+The application tab is a very useful tool for debugging your PWA. I invite you to play with its different menus.
+
+When developing a service worker, it is recommended to check the **Update on reload** checkbox. It makes chrome reinstall the Service Worker after each registration. Otherwise, when you register a new service worker, you will o manually unregister the previous one for the new one to be used. So, please go ahead and check it.
+
+Next, create a javascript file at the root folder called **sw.js** (or whatever you specified to the register method). As written above, the service worker is a set of event handlers that allow us to mainly provide caching behavior (or whatever we want). We are going to implement two event handlers: **install**  and **fetch**.
+
+The first event is `install`. It is called once after a successful service worker **registration**. It is the best place to cache the app shell and all static content. We are going to use Cache API of the service worker to add those files as follows. Add the following code to sw.js.
+
+```javascript
+const CACHE_NAME = "V1"
+
+/**
+ * The install event is fired when the registration succeeds.
+ * After the install step, the browser tries to activate the service worker.
+ * Generally, we cache static resources that allow the website to run offline
+ */
+this.addEventListener('install', async function() {
+    const cache = await caches.open(CACHE_NAME);
+    cache.addAll([
+        '/index.html',
+        '/main.css',
+        '/main.js',
+    ])
+})
+```
+
+Using the cache is pretty straightforward; we first `open` it and then `addAll` static files.
+
+You can check that the files successfully added by clicking on the **Cache Storage** on the left menu.
+
+![Cache storage](./readme_assets/cache_storage.png "Cache storage")
+
+There is a last thing to cache which is the history. Since it is an array that we build and not a direct fetch response, we cannot use the Cache API. The next part of this guide will show another API for caching outside of service workers.
+
+## Caching the history
+
+Before tackling the Service Worker. I'd like to start with using the cache API in order to cache the search history. This allows to practice this API in a classical manner before using it in the Service Worker.
+
+
+
+Now that we got our hand on this great Cache API, we can start playing with the service worker.
 
 ## Links
 
