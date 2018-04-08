@@ -1,6 +1,6 @@
-# Build a PWA from scratch
+# PWA from scratch guide (yet another one)
 
-- [Build a PWA from scratch](#build-a-pwa-from-scratch)
+- [PWA from scratch guide (yet another one)](#pwa-from-scratch-guide-yet-another-one)
     - [Introduction](#introduction)
     - [Requirements](#requirements)
     - [Project description and initialization](#project-description-and-initialization)
