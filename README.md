@@ -1,3 +1,13 @@
+
+- [Build a PWA from scratch](#build-a-pwa-from-scratch)
+    - [Introduction](#introduction)
+    - [Requirements](#requirements)
+    - [Project description and initialization](#project-description-and-initialization)
+    - [The app shell](#the-app-shell)
+    - [The PWA manifest](#the-pwa-manifest)
+    - [Adding a Service Worker](#adding-a-service-worker)
+    - [Links](#links)
+
 # Build a PWA from scratch
 
 ## Introduction
