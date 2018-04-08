@@ -12,6 +12,8 @@
 
 # Build a PWA from scratch
 
+Welcome to my guide for creating a PWA (progressive web app) from scratch. I hope that it will help understand a little more about service workers, manifest and caching. Enjoy :mortar_board:.
+
 ## Introduction
 
 This guide will help build a very simple PWA from scratch, with the intent of showing you only the wpa related code. Thus, no frameworks or code generators will be used. The HTML and CSS content will be very minimal. This will allow to focus only on the parts that are PWA related.
@@ -184,10 +186,18 @@ Here is the code that loads an anime and updates the history when the user click
 
 ```javascript
 /**
- * update History with new result
+ * add an anime to the history and updates display
  */
 function updateHistory(anime) {
-    animes.push(anime)
+    animeHistory.push(anime)
+    //update display
+    addAnimeToHistoryTag(anime)
+}
+
+/**
+ * Update the DOM
+ */
+function addAnimeToHistoryTag(anime) {
     document.querySelector('#history').innerHTML = buildAnimeMarkup(anime) + document.querySelector('#history').innerHTML
 }
 
@@ -424,7 +434,62 @@ After harnessing all that power, there is still a last thing to do which is cach
 
 ## Caching the history
 
+In this section we are going to cache the `animeHhistory` array using the `localStorage` object. It allows to store data and retrieve when the page is reloaded **even after closing the browsing windows**. Storing an entry is performed using `localStorage.setItem(key, entry)` and retrieving it is performed using `localStorage.getItem(key)`.
 
+The caveat here is that this persistent storage however works only with string values. So, we need to serialize/deserialize our array to/from a JSON string when storing/loading respectively. This is achieved thanks to `JSON.stringify(array)` and `JSON.parse(string)` functions.
+
+In **main.js** modify the `updateHistory` function as follows.
+
+```javascript
+const HISTORY_STORAGE_KEY = 'HISTORY_KEY'
+/**
+ * add an anime to the history and updates display
+ */
+function updateHistory(anime) {
+    animeHistory.push(anime)
+    //Save the array in the local storage
+    localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(animeHistory))
+    //update display
+    addAnimeToHistoryTag(anime)
+}
+```
+
+Finally, we need to load the history from the storage on page load. Modify the `onLoadAsync` function as follows.
+
+```javascript
+/**
+ * The history is serrialized as a JSON array. We use JSON.parse to convert is to a Javascript array
+ */
+function getLocalHistory() {
+    return JSON.parse(localStorage.getItem(HISTORY_STORAGE_KEY))
+}
+
+async function onLoadAsync() {
+    //load the history from cache
+    let history = getLocalHistory()
+    if (history !== null) {
+        //set the animeHistory array and update the display
+        animeHistory = history
+        animeHistory.forEach(anime => addAnimeToHistoryTag(anime))
+    }
+
+    //Install the service worker
+    if ('serviceWorker' in navigator) {
+        try {
+            let serviceWorker = await navigator.serviceWorker.register('/sw.js')
+            console.log(`Service worker registered ${serviceWorker}`)
+        } catch (err) {
+            console.error(`Failed to register service worker: ${err}`)
+        }
+    }
+}
+```
+
+Don't panic, we just added a function that loads the anime history from the local storage and then we called it in the `onLoadAsync`function since we want to update the DOM with the history as soon as it is available.
+
+![Cached anime history](./readme_assets/history.jpg "Cached anime history")
+
+Voilà, our small PWA shows the history when the page is loaded and is updated over time :fireworks:.
 
 ## Conclusion and going further
 
@@ -437,3 +502,5 @@ TODO
 - [Progressive Web App tutorial – learn to build a PWA from scratch](https://www.youtube.com/watch?v=gcx-3qi7t7c)
 - [Manifeste des applications web](https://developer.mozilla.org/fr/docs/Web/Manifest)
 - [The Web App Manifest](https://developers.google.com/web/fundamentals/web-app-manifest/)
+- [HTML5 Web Storage](https://www.w3schools.com/html/html5_webstorage.asp)
+- [How do I store an array in localStorage?](https://stackoverflow.com/questions/3357553/how-do-i-store-an-array-in-localstorage?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa)
