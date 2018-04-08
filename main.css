@@ -1,6 +1,7 @@
 #history {
     display: flex;
     flex-direction: row;
+    /** make the history somewhat responsive */
     flex-wrap: wrap;
 }
 
