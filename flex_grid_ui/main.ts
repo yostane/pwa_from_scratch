@@ -10,8 +10,11 @@ const HISTORY_STORAGE_KEY = 'HISTORY_KEY';
 function buildAnimeMarkup(anime) {
   return `<div class="anime_item">
             <img class='anime_image' src=${anime.image_url} />
+            <div class='anime_content'>
             <h2 class='anime_name'>${anime.title}</h2>
-            <p class='anime_description'>${anime.aired_string}</p>
+            <p class='anime_description'>${anime.synopsis}</p>
+            <p class='anime_date'>${anime.aired_string}</p>
+            </div>
           </div>`;
 }
 
@@ -74,14 +77,14 @@ async function onLoadAsync() {
   }
 
   //Install the service worker
-  if ('serviceWorker' in navigator) {
-    try {
-      let serviceWorker = await navigator.serviceWorker.register('/sw.js');
-      console.log(`Service worker registered ${serviceWorker}`);
-    } catch (err) {
-      console.error(`Failed to register service worker: ${err}`);
-    }
-  }
+  // if ('serviceWorker' in navigator) {
+  //   try {
+  //     let serviceWorker = await navigator.serviceWorker.register('/sw.js');
+  //     console.log(`Service worker registered ${serviceWorker}`);
+  //   } catch (err) {
+  //     console.error(`Failed to register service worker: ${err}`);
+  //   }
+  // }
 }
 
 window.addEventListener('load', async event => {

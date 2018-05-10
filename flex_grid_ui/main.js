@@ -43,7 +43,7 @@ var HISTORY_STORAGE_KEY = 'HISTORY_KEY';
  * generate anime tag
  */
 function buildAnimeMarkup(anime) {
-    return "<div class=\"anime_item\">\n            <img class='anime_image' src=" + anime.image_url + " />\n            <h2 class='anime_name'>" + anime.title + "</h2>\n            <p class='anime_description'>" + anime.aired_string + "</p>\n          </div>";
+    return "<div class=\"anime_item\">\n            <img class='anime_image' src=" + anime.image_url + " />\n            <div class='anime_content'>\n            <h2 class='anime_name'>" + anime.title + "</h2>\n            <p class='anime_description'>" + anime.synopsis + "</p>\n            <p class='anime_date'>" + anime.aired_string + "</p>\n            </div>\n          </div>";
 }
 /**
  * add an anime to the history and updates display
@@ -106,31 +106,15 @@ function getLocalHistory() {
 }
 function onLoadAsync() {
     return __awaiter(this, void 0, void 0, function () {
-        var history, serviceWorker, err_2;
+        var history;
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    history = getLocalHistory();
-                    if (history !== null) {
-                        //set the animeHistory array and update the display
-                        animeHistory = history;
-                        animeHistory.forEach(function (anime) { return addAnimeToHistoryTag(anime); });
-                    }
-                    if (!('serviceWorker' in navigator)) return [3 /*break*/, 4];
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, navigator.serviceWorker.register('/sw.js')];
-                case 2:
-                    serviceWorker = _a.sent();
-                    console.log("Service worker registered " + serviceWorker);
-                    return [3 /*break*/, 4];
-                case 3:
-                    err_2 = _a.sent();
-                    console.error("Failed to register service worker: " + err_2);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+            history = getLocalHistory();
+            if (history !== null) {
+                //set the animeHistory array and update the display
+                animeHistory = history;
+                animeHistory.forEach(function (anime) { return addAnimeToHistoryTag(anime); });
             }
+            return [2 /*return*/];
         });
     });
 }

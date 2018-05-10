@@ -26,6 +26,7 @@ self.addEventListener('fetch', (event: FetchEvent) => {
     console.log(`URL ${event.request.url}`, `location origin ${location}`);
 
     try {
+      //to avoid processing chroome-extesnion:// protocol
       if (!event.request.url.startsWith('http')) {
         return await fetch(event.request);
       }
