@@ -81,6 +81,7 @@ header {
 #main_anime {
     display: inline-block;
     max-width: var(--card-width) + 50px;
+    padding: 0 1em 0 1em;
 }
 
 #main_anime .anime_item {
@@ -98,6 +99,7 @@ header {
 }
 
 #history {
+    padding: 0 1em 0 1em;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(var(--card-width), 1fr));
     grid-gap: 30px;
