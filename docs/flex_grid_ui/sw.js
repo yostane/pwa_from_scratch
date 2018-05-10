@@ -48,7 +48,13 @@ this.addEventListener('install', function () { return __awaiter(_this, void 0, v
             case 0: return [4 /*yield*/, caches.open(CACHE_NAME)];
             case 1:
                 cache = _a.sent();
-                cache.addAll(['/index.html', '/main.css', '/main.js']);
+                cache.addAll([
+                    '/index.html',
+                    '/main.js',
+                    '/styles/reset.css',
+                    '/styles/main.css',
+                    '/pwa0-64.png'
+                ]);
                 return [2 /*return*/];
         }
     });

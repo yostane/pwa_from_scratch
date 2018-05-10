@@ -106,15 +106,31 @@ function getLocalHistory() {
 }
 function onLoadAsync() {
     return __awaiter(this, void 0, void 0, function () {
-        var history;
+        var history, serviceWorker, err_2;
         return __generator(this, function (_a) {
-            history = getLocalHistory();
-            if (history !== null) {
-                //set the animeHistory array and update the display
-                animeHistory = history;
-                animeHistory.forEach(function (anime) { return addAnimeToHistoryTag(anime); });
+            switch (_a.label) {
+                case 0:
+                    history = getLocalHistory();
+                    if (history !== null) {
+                        //set the animeHistory array and update the display
+                        animeHistory = history;
+                        animeHistory.forEach(function (anime) { return addAnimeToHistoryTag(anime); });
+                    }
+                    if (!('serviceWorker' in navigator)) return [3 /*break*/, 4];
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, navigator.serviceWorker.register('/sw.js')];
+                case 2:
+                    serviceWorker = _a.sent();
+                    console.log("Service worker registered " + serviceWorker);
+                    return [3 /*break*/, 4];
+                case 3:
+                    err_2 = _a.sent();
+                    console.error("Failed to register service worker: " + err_2);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
-            return [2 /*return*/];
         });
     });
 }

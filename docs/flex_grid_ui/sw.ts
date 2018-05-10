@@ -9,7 +9,13 @@ const CACHE_NAME = 'V1';
  */
 this.addEventListener('install', async () => {
   const cache = await caches.open(CACHE_NAME);
-  cache.addAll(['/index.html', '/main.css', '/main.js']);
+  cache.addAll([
+    '/index.html',
+    '/main.js',
+    '/styles/reset.css',
+    '/styles/main.css',
+    '/pwa0-64.png'
+  ]);
 });
 
 /**
