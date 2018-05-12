@@ -3,6 +3,7 @@ body {
     --card-width: 250px;
 }
 
+
 /* header */
 
 header {
@@ -22,6 +23,30 @@ header {
     height: 30px;
     margin-right: 20px;
 }
+
+
+/* Input */
+
+#ok_button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 0.5em 1em;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1em;
+    border-radius: 0.5em;
+}
+
+#anime_id_input {
+    margin: 0 2em;
+    display: inline-block;
+    border: 1px solid gray;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.1), 0 0 16px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.5);
+}
+
 
 /* anime card */
 
@@ -76,17 +101,20 @@ header {
     box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
 }
 
+
 /* main area */
 
 #main_anime {
     display: inline-block;
     max-width: var(--card-width) + 50px;
     padding: 0 1em 0 1em;
+    margin: 0.5em 0 0 0;
 }
 
 #main_anime .anime_item {
     flex-direction: row;
 }
+
 
 /* history */
 
@@ -94,7 +122,7 @@ header {
     background: rgb(2, 61, 187);
     padding-top: 0.3em;
     padding-bottom: 0.3em;
-    margin-top: 1em;
+    margin-top: 0.5em;
     font-size: 1.1em;
 }
 
