@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	//TODO: Etape 2 - Installation du Service Worker au chargement du document
 	if ('serviceWorker' in navigator) {
 		navigator.serviceWorker
-		  .register('/sw.js')
+		  .register('sw.js')
 		  .then(function(serviceWorker) {
 			console.log('Service Worker registered: ' + serviceWorker);
 		  })
