@@ -1,5 +1,5 @@
 var CACHE_NAME = 'V1';
-var STATIC_FILES = ['', 'scripts.js'];
+var STATIC_FILES = ['/', '/scripts.js'];
 self.addEventListener('install', function (event) {
     console.log('Service Worker installing.');
     self.caches.open(CACHE_NAME).then(function (cache) {
