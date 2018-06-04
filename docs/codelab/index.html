@@ -23,16 +23,22 @@
             <h2>Prerequisites</h2>
             <ul>
                 <li>Basic knowledge of HTML/CSS/JS</li>
-                <li>A code editor such as <a href="https://code.visualstudio.com/" target="_blank">Visual Studio Code</a></li>
+                <li>A code editor such as
+                    <a href="https://code.visualstudio.com/" target="_blank">Visual Studio Code</a>
+                </li>
                 <li>A modern web browser</li>
-                <li>A local web server such as <a href="http://npmjs.com/serve" target="_blank">npmjs.com/serve</a></li>
+                <li>A local web server such as
+                    <a href="http://npmjs.com/serve" target="_blank">npmjs.com/serve</a>
+                </li>
                 <li>This webapp cloned locally</li>
             </ul>
         </aside>
         <article>
-            <p>You probably already heard the term Progressive Web App (PWA) if you follow the latest trends around web development. What does it mean and how do they improve a web application? This Codelab will allow you to better understand PWA with a
-                little practice. 💪.</p>
-            <p>We will together transform this simple web page into a PWA. This will allow the user to have a basic offline mode to view the application and to add it as a shortcut on the home screen of his smartphone.</p>
+            <p>You probably already heard the term Progressive Web App (PWA) if you follow the latest trends around web development.
+                What does it mean and how do they improve a web application? This Codelab will allow you to better understand
+                PWA with a little practice. 💪.</p>
+            <p>We will together transform this simple web page into a PWA. This will allow the user to have a basic offline
+                mode to view the application and to add it as a shortcut on the home screen of his smartphone.</p>
         </article>
     </section>
 
@@ -61,9 +67,31 @@
     <footer>
         <p>This workshop is created and presented by Yassine Benabbas and Sylvain Pollet-Villard</p>
         <p class="license">
-            <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" src="https://i.creativecommons.org/l/by/4.0/88x31.png"></a>Except where otherwise noted, this website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
+            <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+                <img alt="Creative Commons License" src="https://i.creativecommons.org/l/by/4.0/88x31.png">
+            </a>Except where otherwise noted, this website is licensed under a
+            <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
     </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            fetchAttendees().then(attendees => renderAttendees(attendees));
 
+            //TODO: Etape 2 - Installation du Service Worker au chargement du document
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker
+                    .register('sw.js', {
+                        scope: '.' // <--- THIS BIT IS REQUIRED
+                    }).then(function (serviceWorker) {
+                        console.log('Service Worker registered: ' + serviceWorker);
+                    })
+                    .catch(function (error) {
+                        console.log('Error registering the Service Worker: ' + error);
+                    });
+            }
+
+            //TODO: Etape 4 - Réception de messages depuis le Service Worker
+        });
+    </script>
 </body>
 
 </html>

@@ -1,11 +1,11 @@
 var CACHE_NAME = 'V1';
-var STATIC_FILES = ['', 'main.js'];
+var STATIC_FILES = ['', 'scripts.js'];
 self.addEventListener('install', function (event) {
     console.log('Service Worker installing.');
     self.caches.open(CACHE_NAME).then(function (cache) {
         cache.addAll(STATIC_FILES);
     }).catch(function (error) {
-        error.log('caching error ' + error);
+        console.log('caching error ' + error);
     });
 });
 
@@ -21,6 +21,8 @@ self.addEventListener('fetch', function (event) {
                 return response;
             }
             return fetch(event.request);
+        }).catch(function (error) {
+            console.log('fetch or match error ' + error);
         })
     );
 });
