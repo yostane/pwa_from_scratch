@@ -5,9 +5,8 @@
   "background_color": "#e1bde7",
   "display": "fullscreen",
   "Scope": "/",
-  "start_url": "/",
-  "icons": [
-    {
+  "start_url": "/pwa_from_scratch/codelab/",
+  "icons": [{
       "src": "images/icons/icon-72x72.png",
       "sizes": "72x72",
       "type": "image/png"
