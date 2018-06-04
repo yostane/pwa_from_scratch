@@ -40,3 +40,22 @@ function updateRegisterForm() {
 		`Sorry, this event is full.` :
 		`Some places are still available for you to register for this event.`
 }
+
+document.addEventListener("DOMContentLoaded", function (event) {
+	fetchAttendees().then(attendees => renderAttendees(attendees));
+
+	//TODO: Etape 2 - Installation du Service Worker au chargement du document
+	if ('serviceWorker' in navigator) {
+		navigator.serviceWorker
+			.register('/sw.js', {
+				scope: '.' // <--- THIS BIT IS REQUIRED
+			}).then(function (serviceWorker) {
+				console.log('Service Worker registered: ' + serviceWorker);
+			})
+			.catch(function (error) {
+				console.log('Error registering the Service Worker: ' + error);
+			});
+	}
+
+	//TODO: Etape 4 - Réception de messages depuis le Service Worker
+});
